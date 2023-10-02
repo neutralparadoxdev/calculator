@@ -1,0 +1,108 @@
+.calc-container {
+    width: 50vw;
+    height: 50vh;
+    display: grid;
+}
+
+.calc-display {
+    font-size: 32pt;
+    text-align: right;
+
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+.calc-button-7 {
+    grid-row: 3;
+    grid-column: 1;
+}
+
+.calc-button-8 {
+    grid-row: 3;
+    grid-column: 2;
+   
+}
+
+.calc-button-9 {
+    grid-row: 3;
+    grid-column: 3;
+}
+
+.calc-button-4 {
+    grid-row: 4;
+    grid-column: 1;
+}
+
+.calc-button-5 {
+    grid-row: 4;
+    grid-column: 2;
+   
+}
+
+.calc-button-6 {
+    grid-row: 4;
+    grid-column: 3;
+   
+}
+
+.calc-button-1 {
+    grid-row: 5;
+    grid-column: 1;
+}
+
+.calc-button-2 {
+    grid-row: 5;
+    grid-column: 2;
+}
+
+.calc-button-3 {
+    grid-row: 5;
+    grid-column: 3;
+}
+
+.calc-button-0 {
+    grid-row: 6;
+    grid-column: 1;
+}
+
+.calc-button-period {
+    grid-row: 6;
+    grid-column: 2;
+}
+
+.calc-button-ac {
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.calc-button-eq {
+    grid-row: 6;
+    grid-column: 3;
+}
+
+.calc-button-pe {
+    grid-row: 2;
+    grid-column: 3 
+}
+
+.calc-button-p {
+    grid-row: 3;
+    grid-column: 4;
+}
+
+.calc-button-m {
+    grid-row: 4;
+    grid-column: 4;
+}
+
+.calc-button-mx {
+    grid-row: 5;
+    grid-column: 4;
+}
+
+.calc-button-d {
+    grid-row: 6;
+    grid-column: 4; 
+}
