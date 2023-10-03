@@ -2,6 +2,7 @@
     width: 50vw;
     height: 50vh;
     display: grid;
+    margin: auto;
 }
 
 .calc-display {
@@ -105,4 +106,8 @@
 .calc-button-d {
     grid-row: 6;
     grid-column: 4; 
+}
+
+.hidden {
+    color: transparent;
 }

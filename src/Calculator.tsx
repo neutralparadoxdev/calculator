@@ -8,14 +8,24 @@ interface Props {
 
 
 const Calculator: FunctionComponent<Props> = (props: Props) => {
+    const [hidden, setHidden] = useState<string>("");
     const [savedValue, setSavedValue] = useState<number>(0.0);
     const [wasSaved, setWasSaved] = useState<boolean>(false);
     const [savedOp, setSavedOp] = useState<string>("") 
     const [calcDisplayValue, setCalcDisplayValue] = useState<string>("0");
+    const [newInput, setNewInput] = useState<boolean>(false)
 
     function GenerateAddNumber(digit: string) {
         return () => {
+            if(hidden != "") {
+                return;
+            }
+
             setCalcDisplayValue((val: string) => {
+                if(newInput === true) {
+                    val = ""
+                    setNewInput(false);
+                }
                 if (digit !== "." && val === "0") {
                     val = ""
                 }
@@ -29,49 +39,134 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
     }
 
     function clearCalculator() {
+        if(hidden != "") {
+            return;
+        }
         setSavedValue(0.0);
         setWasSaved(false);
-        setCalcDisplayValue("0")
+        setSavedOp("")
+        setNewInput(false);
+
+        setHidden((val) => {
+            setTimeout(() => {
+                setCalcDisplayValue("0");
+                setHidden("")
+            }, 100)
+            return"hidden";
+        });
     }
 
     function flipFieldSign() {
-        setCalcDisplayValue((val: string) => {
-            if (val.length === 0 || val === "0") return val;
-            if (val[0] === "-") return val.split('-')[1];
-            return "-" + val
-        })
-    }
-
-    function resolveOp() {
-        let val = parseFloat(calcDisplayValue)
-        if (savedOp === "+") {
-            setCalcDisplayValue((val + savedValue).toString())
+        if(hidden != "") {
+                return;
         }
 
+        setHidden((val) => {
+            setTimeout(() => {
+                setCalcDisplayValue((val: string) => {
+                    if (val.length === 0 || val === "0") return val;
+                    if (val[0] === "-") return val.split('-')[1];
+                    return "-" + val
+                })
+                setHidden("")
+            }, 200)
+            return"hidden";
+        });
+
+    }
+
+    function resolveOp(): number {
+        let val = parseFloat(calcDisplayValue)
+        if (savedOp === "") {
+            return 0.0;
+        }
+        if (savedOp === "+") {
+            return (val + savedValue);
+        }
+
+        if (savedOp === "-") {
+            return (val - savedValue);
+        }
+
+        if (savedOp === "/") {
+            return (val / savedValue);
+        }
+
+        if (savedOp === "*") {
+            return (val * savedValue);
+        }
+        return 0
     }
 
     function addOp(op: string) {
-        if(!wasSaved) {
-            resolveOp();
-        }
+        return () => {
+            if(hidden != "") {
+                return;
+            }
+            if(op == "=" && !wasSaved) {
+                return
+            }
 
-        setSavedValue(parseFloat(calcDisplayValue))
-        setSavedOp(op)
-        setWasSaved(true);
-        return
+            if(op == "=" && wasSaved) {
+                let x = resolveOp();
+                setHidden((val) => {
+                    setTimeout(() => {
+                        setCalcDisplayValue(x.toString());
+                        setHidden("")
+                    }, 100)
+                    return"hidden";
+                });
+                setSavedValue(x);
+                setWasSaved(false);
+                setNewInput(true);
+                return
+            }
+
+            if(wasSaved) {
+                let x = resolveOp();
+                setHidden((val) => {
+                    setTimeout(() => {
+                        setCalcDisplayValue(x.toString());
+                        setHidden("")
+                    }, 100)
+                   
+                    return"hidden";
+                });
+                setSavedValue(x)
+                setSavedOp(op)
+                setWasSaved(true);
+                setNewInput(true);
+                return 
+            }
+
+            setSavedValue(parseFloat(calcDisplayValue))
+            setSavedOp(op)
+            setWasSaved(true);
+            setNewInput(true);
+
+            setHidden((val) => {
+                setTimeout(() => {
+                    setHidden("")
+                }, 100)
+                return"hidden";
+            });
+
+            return
+        }
     }
 
     return (
+        <>
         <div className="calc-container">
-            <input type="text" className="calc-display" value={calcDisplayValue} />
+            <input type="text" className={ "calc-display " + hidden } value={calcDisplayValue} />
 
             <button className="calc-button-ac" onClick={clearCalculator}>AC</button>
-            <button className="calc-button-p">+</button>
-            <button className="calc-button-m">-</button>
-            <button className="calc-button-mx">X</button>
-            <button className="calc-button-d">/</button>
+            <button className="calc-button-p" onClick={addOp("+")}>+</button>
+            <button className="calc-button-m" onClick={addOp("-")}>-</button>
+            <button className="calc-button-mx" onClick={addOp("*")}>X</button>
+            <button className="calc-button-d" onClick={addOp("/")}>/</button>
             <button className="calc-button-pe" onClick={flipFieldSign}>+/-</button>
-            <button className="calc-button-eq">=</button>
+            <button className="calc-button-eq" onClick={addOp("=")}>=</button>
             <button className="calc-button-period" onClick={GenerateAddNumber(".")}>.</button>
             <button className="calc-button-0" onClick={GenerateAddNumber("0")}>0</button>
             <button className="calc-button-1" onClick={GenerateAddNumber("1")}>1</button>
@@ -85,6 +180,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             <button className="calc-button-9" onClick={GenerateAddNumber("9")}>9</button>
 
         </div>
+        </>
     );
 }
 
