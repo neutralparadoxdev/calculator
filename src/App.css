@@ -5,6 +5,8 @@ h1 {
 h3 {
     text-align: justify;
     color: red;
+    margin-left: 2vw;
+    margin-right: 2vw;
 }
 
 .legal-disclaimer-title {

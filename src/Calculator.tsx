@@ -17,7 +17,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
 
     function GenerateAddNumber(digit: string) {
         return () => {
-            if(hidden != "") {
+            if(hidden !== "") {
                 return;
             }
 
@@ -25,6 +25,10 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
                 if(newInput === true) {
                     val = ""
                     setNewInput(false);
+                }
+
+                if(digit == ".") {
+                    return val + "."
                 }
                 if (digit !== "." && val === "0") {
                     val = ""
@@ -39,7 +43,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
     }
 
     function clearCalculator() {
-        if(hidden != "") {
+        if(hidden !== "") {
             return;
         }
         setSavedValue(0.0);
@@ -57,13 +61,14 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
     }
 
     function flipFieldSign() {
-        if(hidden != "") {
+        if(hidden !== "") {
                 return;
         }
 
-        setHidden((val) => {
+        setHidden((prev) => {
             setTimeout(() => {
                 setCalcDisplayValue((val: string) => {
+                    console.log(val)
                     if (val.length === 0 || val === "0") return val;
                     if (val[0] === "-") return val.split('-')[1];
                     return "-" + val
@@ -156,31 +161,28 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
     }
 
     return (
-        <>
         <div className="calc-container">
             <input type="text" className={ "calc-display " + hidden } value={calcDisplayValue} />
 
-            <button className="calc-button-ac" onClick={clearCalculator}>AC</button>
-            <button className="calc-button-p" onClick={addOp("+")}>+</button>
-            <button className="calc-button-m" onClick={addOp("-")}>-</button>
-            <button className="calc-button-mx" onClick={addOp("*")}>X</button>
-            <button className="calc-button-d" onClick={addOp("/")}>/</button>
-            <button className="calc-button-pe" onClick={flipFieldSign}>+/-</button>
-            <button className="calc-button-eq" onClick={addOp("=")}>=</button>
-            <button className="calc-button-period" onClick={GenerateAddNumber(".")}>.</button>
-            <button className="calc-button-0" onClick={GenerateAddNumber("0")}>0</button>
-            <button className="calc-button-1" onClick={GenerateAddNumber("1")}>1</button>
-            <button className="calc-button-2" onClick={GenerateAddNumber("2")}>2</button>
-            <button className="calc-button-3" onClick={GenerateAddNumber("3")}>3</button>
-            <button className="calc-button-4" onClick={GenerateAddNumber("4")}>4</button>
-            <button className="calc-button-5" onClick={GenerateAddNumber("5")}>5</button>
-            <button className="calc-button-6" onClick={GenerateAddNumber("6")}>6</button>
-            <button className="calc-button-7" onClick={GenerateAddNumber("7")}>7</button>
-            <button className="calc-button-8" onClick={GenerateAddNumber("8")}>8</button>
-            <button className="calc-button-9" onClick={GenerateAddNumber("9")}>9</button>
-
+            <button className="calc-button calc-button-ac" onClick={clearCalculator}>AC</button>
+            <button className="calc-button calc-button-p" onClick={addOp("+")}>+</button>
+            <button className="calc-button calc-button-m" onClick={addOp("-")}>-</button>
+            <button className="calc-button calc-button-mx" onClick={addOp("*")}>X</button>
+            <button className="calc-button calc-button-d" onClick={addOp("/")}>/</button>
+            <button className="calc-button calc-button-pe" onClick={flipFieldSign}>+/-</button>
+            <button className="calc-button calc-button-eq" onClick={addOp("=")}>=</button>
+            <button className="calc-button calc-button-period" onClick={GenerateAddNumber(".")}>.</button>
+            <button className="calc-button calc-button-0" onClick={GenerateAddNumber("0")}>0</button>
+            <button className="calc-button calc-button-1" onClick={GenerateAddNumber("1")}>1</button>
+            <button className="calc-button calc-button-2" onClick={GenerateAddNumber("2")}>2</button>
+            <button className="calc-button calc-button-3" onClick={GenerateAddNumber("3")}>3</button>
+            <button className="calc-button calc-button-4" onClick={GenerateAddNumber("4")}>4</button>
+            <button className="calc-button calc-button-5" onClick={GenerateAddNumber("5")}>5</button>
+            <button className="calc-button calc-button-6" onClick={GenerateAddNumber("6")}>6</button>
+            <button className="calc-button calc-button-7" onClick={GenerateAddNumber("7")}>7</button>
+            <button className="calc-button calc-button-8" onClick={GenerateAddNumber("8")}>8</button>
+            <button className="calc-button calc-button-9" onClick={GenerateAddNumber("9")}>9</button>
         </div>
-        </>
     );
 }
 
