@@ -1,18 +1,26 @@
 .calc-container {
-    width: 50vw;
-    height: 50vh;
+    width: 125pt;
+    height: 200pt;
     display: grid;
     margin: auto;
+    padding: 1vh 1vw;
 }
 
 .calc-display {
     font-size: 32pt;
     text-align: right;
+    width: 98%;
+    margin: 2px;
+    padding: 2px;
+    border: 1px solid black;
 
-    grid-row-start: 1;
-    grid-row-end: 2;
+    grid-row: 1;
     grid-column-start: 1;
     grid-column-end: 5;
+}
+
+.calc-button {
+    width: 100%;
 }
 
 .calc-button-7 {
