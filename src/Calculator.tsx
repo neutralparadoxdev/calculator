@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 
 import './Calculator.css';
 
@@ -14,6 +14,14 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
     const [savedOp, setSavedOp] = useState<string>("") 
     const [calcDisplayValue, setCalcDisplayValue] = useState<string>("0");
     const [newInput, setNewInput] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (hidden === "hidden") {
+            setTimeout(() => {
+                setHidden("")
+            }, 200)
+        }
+    }, [hidden])
 
     function GenerateAddNumber(digit: string) {
         return () => {
@@ -52,12 +60,6 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
         setNewInput(false);
 
         setCalcDisplayValue("0");
-        setHidden((val) => {
-            setTimeout(() => {
-                setHidden("")
-            }, 100)
-            return"hidden";
-        });
     }
 
     function flipFieldSign() {
@@ -69,14 +71,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             if (val[0] === "-") return val.split('-')[1];
             return "-" + val
        })
-
-        setHidden((prev) => {
-            setTimeout(() => {
-                setHidden("")
-            }, 200);
-            return"hidden";
-        });
-
+       setHidden("hidden")
     }
 
     function resolveOp(): number {
@@ -114,12 +109,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             if(op == "=" && wasSaved) {
                 let x = resolveOp();
                 setCalcDisplayValue(x.toString());
-                setHidden((val) => {
-                    setTimeout(() => {
-                        setHidden("")
-                    }, 100)
-                    return"hidden";
-                });
+                setHidden("hidden");
                 setSavedValue(x);
                 setWasSaved(false);
                 setNewInput(true);
@@ -129,13 +119,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             if(wasSaved) {
                 let x = resolveOp();
                 setCalcDisplayValue(x.toString());
-                setHidden((val) => {
-                    setTimeout(() => {
-                        setHidden("")
-                    }, 100)
-                   
-                    return"hidden";
-                });
+                setHidden("hidden")
                 setSavedValue(x)
                 setSavedOp(op)
                 setWasSaved(true);
@@ -147,14 +131,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             setSavedOp(op)
             setWasSaved(true);
             setNewInput(true);
-
-            setHidden((val) => {
-                setTimeout(() => {
-                    setHidden("")
-                }, 100)
-                return"hidden";
-            });
-
+            setHidden("hidden")
             return
         }
     }
