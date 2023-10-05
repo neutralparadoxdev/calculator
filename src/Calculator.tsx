@@ -51,9 +51,9 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
         setSavedOp("")
         setNewInput(false);
 
+        setCalcDisplayValue("0");
         setHidden((val) => {
             setTimeout(() => {
-                setCalcDisplayValue("0");
                 setHidden("")
             }, 100)
             return"hidden";
@@ -64,17 +64,16 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
         if(hidden !== "") {
                 return;
         }
+        setCalcDisplayValue((val: string) => {
+            if (val.length === 0 || val === "0") return val;
+            if (val[0] === "-") return val.split('-')[1];
+            return "-" + val
+       })
 
         setHidden((prev) => {
             setTimeout(() => {
-                setCalcDisplayValue((val: string) => {
-                    console.log(val)
-                    if (val.length === 0 || val === "0") return val;
-                    if (val[0] === "-") return val.split('-')[1];
-                    return "-" + val
-                })
                 setHidden("")
-            }, 200)
+            }, 200);
             return"hidden";
         });
 
@@ -114,9 +113,9 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
 
             if(op == "=" && wasSaved) {
                 let x = resolveOp();
+                setCalcDisplayValue(x.toString());
                 setHidden((val) => {
                     setTimeout(() => {
-                        setCalcDisplayValue(x.toString());
                         setHidden("")
                     }, 100)
                     return"hidden";
@@ -129,9 +128,9 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
 
             if(wasSaved) {
                 let x = resolveOp();
+                setCalcDisplayValue(x.toString());
                 setHidden((val) => {
                     setTimeout(() => {
-                        setCalcDisplayValue(x.toString());
                         setHidden("")
                     }, 100)
                    
