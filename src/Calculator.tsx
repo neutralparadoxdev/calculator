@@ -8,7 +8,7 @@ interface Props {
 
 
 const Calculator: FunctionComponent<Props> = (props: Props) => {
-    const [hidden, setHidden] = useState<string>("");
+    const [hidden, setHidden] = useState<boolean>(false);
     const [savedValue, setSavedValue] = useState<number>(0.0);
     const [wasSaved, setWasSaved] = useState<boolean>(false);
     const [savedOp, setSavedOp] = useState<string>("") 
@@ -16,16 +16,16 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
     const [newInput, setNewInput] = useState<boolean>(false)
 
     useEffect(() => {
-        if (hidden === "hidden") {
+        if (hidden) {
             setTimeout(() => {
-                setHidden("")
+                setHidden(false)
             }, 200)
         }
     }, [hidden])
 
     function GenerateAddNumber(digit: string) {
         return () => {
-            if(hidden !== "") {
+            if(hidden) {
                 return;
             }
 
@@ -51,7 +51,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
     }
 
     function clearCalculator() {
-        if(hidden !== "") {
+        if(hidden) {
             return;
         }
         setSavedValue(0.0);
@@ -63,7 +63,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
     }
 
     function flipFieldSign() {
-        if(hidden !== "") {
+        if(hidden) {
                 return;
         }
         setCalcDisplayValue((val: string) => {
@@ -71,7 +71,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             if (val[0] === "-") return val.split('-')[1];
             return "-" + val
        })
-       setHidden("hidden")
+       setHidden(true)
     }
 
     function resolveOp(): number {
@@ -99,7 +99,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
 
     function addOp(op: string) {
         return () => {
-            if(hidden != "") {
+            if(hidden) {
                 return;
             }
             if(op == "=" && !wasSaved) {
@@ -109,7 +109,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             if(op == "=" && wasSaved) {
                 let x = resolveOp();
                 setCalcDisplayValue(x.toString());
-                setHidden("hidden");
+                setHidden(true);
                 setSavedValue(x);
                 setWasSaved(false);
                 setNewInput(true);
@@ -119,7 +119,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             if(wasSaved) {
                 let x = resolveOp();
                 setCalcDisplayValue(x.toString());
-                setHidden("hidden")
+                setHidden(true)
                 setSavedValue(x)
                 setSavedOp(op)
                 setWasSaved(true);
@@ -131,14 +131,14 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             setSavedOp(op)
             setWasSaved(true);
             setNewInput(true);
-            setHidden("hidden")
+            setHidden(true)
             return
         }
     }
 
     return (
         <div className="calc-container">
-            <input type="text" className={ "calc-display " + hidden } value={calcDisplayValue} />
+            <input type="text" className={ "calc-display " + (hidden ? "hidden" : "")} value={calcDisplayValue} />
 
             <button className="calc-button calc-button-ac" onClick={clearCalculator}>AC</button>
             <button className="calc-button calc-button-p" onClick={addOp("+")}>+</button>
