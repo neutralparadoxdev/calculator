@@ -6,12 +6,22 @@ interface Props {
 
 }
 
+enum MathOp {
+    NONE,
+    PLUS,
+    MINUS,
+    DIVIDE,
+    MULTIPLY,
+    EQUAL,
+    INVERSE
+}
+
 
 const Calculator: FunctionComponent<Props> = (props: Props) => {
     const [hidden, setHidden] = useState<boolean>(false);
     const [savedValue, setSavedValue] = useState<number>(0.0);
     const [wasSaved, setWasSaved] = useState<boolean>(false);
-    const [savedOp, setSavedOp] = useState<string>("") 
+    const [savedOp, setSavedOp] = useState<MathOp>(MathOp.NONE);
     const [calcDisplayValue, setCalcDisplayValue] = useState<string>("0");
     const [newInput, setNewInput] = useState<boolean>(false)
 
@@ -56,7 +66,7 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
         }
         setSavedValue(0.0);
         setWasSaved(false);
-        setSavedOp("")
+        setSavedOp(MathOp.NONE)
         setNewInput(false);
 
         setCalcDisplayValue("0");
@@ -76,37 +86,37 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
 
     function resolveOp(): number {
         let val = parseFloat(calcDisplayValue)
-        if (savedOp === "") {
+        if (savedOp === MathOp.NONE) {
             return 0.0;
         }
-        if (savedOp === "+") {
+        if (savedOp === MathOp.PLUS) {
             return (val + savedValue);
         }
 
-        if (savedOp === "-") {
+        if (savedOp === MathOp.MINUS) {
             return (val - savedValue);
         }
 
-        if (savedOp === "/") {
-            return (val / savedValue);
+        if (savedOp === MathOp.DIVIDE) {
+            return (savedValue /  val);
         }
 
-        if (savedOp === "*") {
+        if (savedOp === MathOp.MULTIPLY) {
             return (val * savedValue);
         }
         return 0
     }
 
-    function addOp(op: string) {
+    function addOp(op: MathOp) {
         return () => {
             if(hidden) {
                 return;
             }
-            if(op == "=" && !wasSaved) {
+            if(op == MathOp.EQUAL && !wasSaved) {
                 return
             }
 
-            if(op == "=" && wasSaved) {
+            if(op == MathOp.EQUAL && wasSaved) {
                 let x = resolveOp();
                 setCalcDisplayValue(x.toString());
                 setHidden(true);
@@ -141,12 +151,12 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
             <input type="text" className={ "calc-display " + (hidden ? "hidden" : "")} value={calcDisplayValue} />
 
             <button className="calc-button calc-button-ac" onClick={clearCalculator}>AC</button>
-            <button className="calc-button calc-button-p" onClick={addOp("+")}>+</button>
-            <button className="calc-button calc-button-m" onClick={addOp("-")}>-</button>
-            <button className="calc-button calc-button-mx" onClick={addOp("*")}>X</button>
-            <button className="calc-button calc-button-d" onClick={addOp("/")}>/</button>
+            <button className="calc-button calc-button-p" onClick={addOp(MathOp.PLUS)}>+</button>
+            <button className="calc-button calc-button-m" onClick={addOp(MathOp.MINUS)}>-</button>
+            <button className="calc-button calc-button-mx" onClick={addOp(MathOp.MULTIPLY)}>X</button>
+            <button className="calc-button calc-button-d" onClick={addOp(MathOp.DIVIDE)}>/</button>
             <button className="calc-button calc-button-pe" onClick={flipFieldSign}>+/-</button>
-            <button className="calc-button calc-button-eq" onClick={addOp("=")}>=</button>
+            <button className="calc-button calc-button-eq" onClick={addOp(MathOp.EQUAL)}>=</button>
             <button className="calc-button calc-button-period" onClick={GenerateAddNumber(".")}>.</button>
             <button className="calc-button calc-button-0" onClick={GenerateAddNumber("0")}>0</button>
             <button className="calc-button calc-button-1" onClick={GenerateAddNumber("1")}>1</button>
