@@ -4,11 +4,12 @@ import { MathOp, appendNumberToValue, flipSignString, resolveOp } from './calcul
 
 import './Calculator.css';
 
-interface Props {
+export interface CalculatorProps {
 
 }
 
-const Calculator: FunctionComponent<Props> = (props: Props) => {
+
+export const Calculator: FunctionComponent<CalculatorProps> = (props: CalculatorProps) => {
     const [hidden, setHidden] = useState<boolean>(false);
     const [valueState, setValueState] = useState<number>(0.0);
     const [wasSaved, setWasSaved] = useState<boolean>(false);
@@ -128,5 +129,3 @@ const Calculator: FunctionComponent<Props> = (props: Props) => {
         </div>
     );
 }
-
-export default Calculator;
